@@ -9,7 +9,7 @@ interface Params {
 }
 
 export default async function HomePage({ params }: { params: Params }) {
-  const { subdomain } = await params;
+  const { subdomain } = params;
 
   const org = await clerkClient.organizations.getOrganization({
     slug: subdomain,
