@@ -1,14 +1,15 @@
 import { db } from "@/db";
 import { blogTable } from "@/db/schema";
-// import { clerkClient } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server"; // ✅ named import
 import { eq } from "drizzle-orm";
-import clerkClient from "@clerk/clerk-sdk-node";
 
-interface Params {
-  subdomain: string;
-}
+type PageProps = {
+  params: {
+    subdomain: string;
+  };
+};
 
-export default async function HomePage({ params }: { params: Params }) {
+export default async function HomePage({ params }: PageProps) {
   const { subdomain } = params;
 
   const org = await clerkClient.organizations.getOrganization({
@@ -22,7 +23,7 @@ export default async function HomePage({ params }: { params: Params }) {
     .where(eq(blogTable.OrgId, orgID));
 
   return (
-    <div className="p-10 ">
+    <div className="p-10">
       {blogs.map((blog) => (
         <div className="mt-4" key={blog.id}>
           <h3 className="text-2xl font-bold">{blog.title}</h3>
